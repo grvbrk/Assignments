@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 type Post = {
   userId: number;
   id: number;
@@ -5,7 +7,7 @@ type Post = {
   body: string;
 };
 
-function Card({ post }: { post: Post }) {
+function PostCard({ post }: { post: Post }) {
   return (
     <div className="card">
       <div className="card-header">{post.title}</div>
@@ -13,12 +15,12 @@ function Card({ post }: { post: Post }) {
         <div className="card-preview-text">{post.body}</div>
       </div>
       <div className="card-footer">
-        <a className="btn" href="post.html">
+        <Link className="btn" to={post.id.toString()}>
           View
-        </a>
+        </Link>
       </div>
     </div>
   );
 }
 
-export default Card;
+export default PostCard;

@@ -1,13 +1,8 @@
-import Posts from "../pages/Posts";
-import Users from "../pages/Users";
-import Todos from "../pages/Todos";
+import { postRouter } from "../pages/Posts/Posts";
+import { userRouter } from "../pages/Users";
+import { todoRouter } from "../pages/Todos";
 import HomeLayout from "../layout/HomeLayout";
-
-type LoaderType = {
-  request: {
-    signal: AbortSignal;
-  };
-};
+import { singlePostRouter } from "../pages/Posts/SinglePost";
 
 const routes = [
   {
@@ -15,14 +10,27 @@ const routes = [
     element: <HomeLayout />,
     children: [
       {
-        path: "/posts",
-        element: <Posts />,
-        loader: ({ request: { signal } }: LoaderType) => {
-          return fetch("http://localhost:3000/posts", { signal });
-        },
+        path: "posts",
+
+        children: [
+          {
+            index: true,
+            ...postRouter,
+          },
+          {
+            path: ":postId",
+            ...singlePostRouter,
+          },
+        ],
       },
-      { path: "/users", element: <Users /> },
-      { path: "/todos", element: <Todos /> },
+      {
+        path: "users",
+        ...userRouter,
+      },
+      {
+        path: "todos",
+        ...todoRouter,
+      },
     ],
   },
 ];
