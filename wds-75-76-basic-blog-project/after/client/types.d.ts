@@ -46,7 +46,8 @@ export type Comments = {
 
 export type LoaderType = {
   params?: {
-    postId: string;
+    postId?: string;
+    userId?: string;
   };
   request: {
     signal: AbortSignal;

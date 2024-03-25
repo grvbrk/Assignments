@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { User } from "../../../types";
 
 function UserCard({ user }: { user: User }) {
@@ -10,9 +11,9 @@ function UserCard({ user }: { user: User }) {
         <div>{user.email}</div>
       </div>
       <div className="card-footer">
-        <a className="btn" href="user.html">
+        <Link className="btn" to={user.id.toString()}>
           View
-        </a>
+        </Link>
       </div>
     </div>
   );

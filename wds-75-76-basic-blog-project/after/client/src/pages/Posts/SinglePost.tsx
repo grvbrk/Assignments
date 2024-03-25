@@ -36,16 +36,16 @@ async function loader({ params, request: { signal } }: LoaderType) {
   const post = await fetch(`http://localhost:3000/posts/${params!.postId}`, {
     signal,
   }).then((res) => res.json());
-  const user = await fetch(`http://localhost:3000/users/${post.userId}`, {
+  const user = fetch(`http://localhost:3000/users/${post.userId}`, {
     signal,
   }).then((res) => res.json());
-  const comments = await fetch(
-    `http://localhost:3000/users/${post.userId}/comments`,
+  const comments = fetch(
+    `http://localhost:3000/posts/${params!.postId}/comments`,
     {
       signal,
     }
   ).then((res) => res.json());
-  return { post, user, comments };
+  return { post, user: await user, comments: await comments };
 }
 
 export const singlePostRouter = {

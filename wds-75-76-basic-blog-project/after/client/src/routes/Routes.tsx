@@ -1,8 +1,9 @@
 import { postRouter } from "../pages/Posts/Posts";
-import { userRouter } from "../pages/Users";
+import { userRouter } from "../pages/Users/Users";
 import { todoRouter } from "../pages/Todos";
 import HomeLayout from "../layout/HomeLayout";
 import { singlePostRouter } from "../pages/Posts/SinglePost";
+import { singleUserRouter } from "../pages/Users/SingleUser";
 
 const routes = [
   {
@@ -25,7 +26,10 @@ const routes = [
       },
       {
         path: "users",
-        ...userRouter,
+        children: [
+          { index: true, ...userRouter },
+          { path: ":userId", ...singleUserRouter },
+        ],
       },
       {
         path: "todos",

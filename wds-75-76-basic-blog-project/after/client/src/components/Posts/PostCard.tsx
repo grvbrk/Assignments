@@ -1,11 +1,5 @@
 import { Link } from "react-router-dom";
-
-type Post = {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
-};
+import { Post } from "../../../types";
 
 function PostCard({ post }: { post: Post }) {
   return (
