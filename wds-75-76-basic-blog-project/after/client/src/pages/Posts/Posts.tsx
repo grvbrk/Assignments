@@ -5,14 +5,14 @@ import { useLoaderData } from "react-router-dom";
 function Posts() {
   const postsData = useLoaderData() as Post[];
   return (
-    <div className="container">
+    <>
       <h1 className="page-title">Posts</h1>
       <div className="card-grid">
         {postsData.map((post) => {
           return <PostCard key={post.id} post={post} />;
         })}
       </div>
-    </div>
+    </>
   );
 }
 

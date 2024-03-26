@@ -5,14 +5,14 @@ import { Todo, LoaderType } from "../../types";
 function Todos() {
   const todosData = useLoaderData() as Todo[];
   return (
-    <div className="container">
+    <>
       <h1 className="page-title">Todos</h1>
       <ul>
         {todosData.map((todo) => {
           return <TodoCard key={todo.id} todo={todo} />;
         })}
       </ul>
-    </div>
+    </>
   );
 }
 

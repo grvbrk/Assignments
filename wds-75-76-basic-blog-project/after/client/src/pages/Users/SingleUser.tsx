@@ -9,7 +9,6 @@ function SingleUser() {
     userPosts: Post[];
     userTodos: Todo[];
   };
-  console.log(userTodos);
   return (
     <div className="container">
       <h1 className="page-title">{user.name}</h1>

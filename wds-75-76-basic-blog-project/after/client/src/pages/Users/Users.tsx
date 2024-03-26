@@ -5,14 +5,14 @@ import { User, LoaderType } from "../../../types";
 function Users() {
   const userData = useLoaderData() as User[];
   return (
-    <div className="container">
-      <h1 className="page-title">Todos</h1>
+    <>
+      <h1 className="page-title">Users</h1>
       <div className="card-grid">
         {userData.map((user) => {
           return <UserCard key={user.id} user={user} />;
         })}
       </div>
-    </div>
+    </>
   );
 }
 

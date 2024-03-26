@@ -4,6 +4,7 @@ import { todoRouter } from "../pages/Todos";
 import HomeLayout from "../layout/HomeLayout";
 import { singlePostRouter } from "../pages/Posts/SinglePost";
 import { singleUserRouter } from "../pages/Users/SingleUser";
+import ErrorRoute from "../pages/ErrorRoute";
 
 const routes = [
   {
@@ -11,32 +12,37 @@ const routes = [
     element: <HomeLayout />,
     children: [
       {
-        path: "posts",
-
+        errorElement: <ErrorRoute />,
         children: [
           {
-            index: true,
-            ...postRouter,
+            path: "posts",
+            children: [
+              {
+                index: true,
+                ...postRouter,
+              },
+              {
+                path: ":postId",
+                ...singlePostRouter,
+              },
+            ],
           },
           {
-            path: ":postId",
-            ...singlePostRouter,
+            path: "users",
+            children: [
+              { index: true, ...userRouter },
+              { path: ":userId", ...singleUserRouter },
+            ],
+          },
+          {
+            path: "todos",
+            ...todoRouter,
           },
         ],
-      },
-      {
-        path: "users",
-        children: [
-          { index: true, ...userRouter },
-          { path: ":userId", ...singleUserRouter },
-        ],
-      },
-      {
-        path: "todos",
-        ...todoRouter,
       },
     ],
   },
+  { path: "*", element: <h1>Route Not found</h1> },
 ];
 
 export default routes;
