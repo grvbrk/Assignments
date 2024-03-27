@@ -1,7 +1,10 @@
+import { useState } from "react";
 import DatePicker from "./DatePicker";
 
 function App() {
-  return <DatePicker />;
+  const [date, setDate] = useState<Date>();
+
+  return <DatePicker date={date} setDate={setDate} />;
 }
 
 export default App;
