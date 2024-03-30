@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { useState } from "react";
-import useEventContext from "../Context/CalendarContext";
+import useEventContext, { EventType } from "../Context/CalendarContext";
 
 type EditEventPropsType = {
   modalDate: Date;
@@ -13,16 +13,22 @@ function EditEventModal({ modalDate, setIsModalOpen }: EditEventPropsType) {
     ["all-day"]: false,
     ["start-time"]: "",
     ["end-time"]: "",
-    blue: false,
-    red: false,
-    green: false,
+    color: "",
   });
 
-  const val = useEventContext();
+  const { events, addEvent, deleteEvent, updateEvent } = useEventContext();
 
   function handleFormSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsModalOpen((t) => !t);
+    setIsModalOpen(false);
+
+    const event = {
+      id: crypto.randomUUID(),
+      eventDate: modalDate,
+      ...formData,
+    };
+
+    addEvent(event);
   }
 
   function handleEventChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -102,7 +108,7 @@ function EditEventModal({ modalDate, setIsModalOpen }: EditEventPropsType) {
                 name="color"
                 value="blue"
                 id="blue"
-                checked={formData.blue}
+                checked={formData.color === "blue"}
                 onChange={handleEventChange}
                 className="color-radio"
               />
@@ -115,7 +121,7 @@ function EditEventModal({ modalDate, setIsModalOpen }: EditEventPropsType) {
                 value="red"
                 id="red"
                 className="color-radio"
-                checked={formData.red}
+                checked={formData.color === "red"}
                 onChange={handleEventChange}
               />
               <label htmlFor="red">
@@ -127,7 +133,7 @@ function EditEventModal({ modalDate, setIsModalOpen }: EditEventPropsType) {
                 value="green"
                 id="green"
                 className="color-radio"
-                checked={formData.green}
+                checked={formData.color === "green"}
                 onChange={handleEventChange}
               />
               <label htmlFor="green">

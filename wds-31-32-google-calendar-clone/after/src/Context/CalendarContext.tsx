@@ -1,14 +1,13 @@
 import { createContext, useContext, useState } from "react";
 
-type EventType = {
-  id: string;
+export type EventType = {
+  id?: string;
+  eventDate?: Date;
   name: string;
   ["all-day"]: boolean;
   ["start-time"]: string;
   ["end-time"]: string;
-  blue: boolean;
-  red: boolean;
-  green: boolean;
+  color: string;
 };
 
 type ContextType = {
@@ -20,7 +19,7 @@ type ContextType = {
 
 export const Context = createContext<ContextType | undefined>(undefined);
 
-function EventContext({ children }: { children: React.ReactNode }) {
+export function EventContext({ children }: { children: React.ReactNode }) {
   const [events, setEvents] = useState<EventType[]>([]);
 
   function addEvent(event: EventType) {

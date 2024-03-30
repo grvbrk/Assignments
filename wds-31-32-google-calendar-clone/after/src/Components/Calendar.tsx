@@ -11,27 +11,34 @@ import {
   startOfMonth,
   startOfWeek,
 } from "date-fns";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import ShowEvents from "./ShowEvents";
+import { EventType } from "../Context/CalendarContext";
 
 type CalendarPropsType = {
-  currentDate: Date;
-  setCurrentDate: React.Dispatch<React.SetStateAction<Date>>;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleEditEventModal: () => void;
+  setEvent: (e: EventType) => void;
+
   setModalDate: React.Dispatch<React.SetStateAction<Date>>;
 };
 
 function Calendar({
-  currentDate,
-  setCurrentDate,
   setIsModalOpen,
+  toggleEditEventModal,
+  setEvent,
   setModalDate,
 }: CalendarPropsType) {
   const [currentVisibleMonth, setCurrentVisibleMonth] = useState(new Date());
 
-  const currentDatesOfMonth = eachDayOfInterval({
-    start: startOfWeek(startOfMonth(currentVisibleMonth)),
-    end: endOfWeek(endOfMonth(currentVisibleMonth)),
-  });
+  const currentDatesOfMonth = useMemo(
+    () =>
+      eachDayOfInterval({
+        start: startOfWeek(startOfMonth(currentVisibleMonth)),
+        end: endOfWeek(endOfMonth(currentVisibleMonth)),
+      }),
+    [currentVisibleMonth]
+  );
 
   function increaseMonth() {
     setCurrentVisibleMonth((currentMonth) => {
@@ -92,6 +99,13 @@ function Calendar({
                   +
                 </button>
               </div>
+              {
+                <ShowEvents
+                  toggleEditEventModal={toggleEditEventModal}
+                  setEvent={setEvent}
+                  date={date}
+                />
+              }
             </div>
           );
         })}
