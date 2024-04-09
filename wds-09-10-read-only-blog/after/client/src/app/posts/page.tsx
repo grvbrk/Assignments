@@ -1,29 +1,30 @@
-import PostCard from "@/components/PostCard";
+import { PostCard, SkeletonPostCard } from "@/components/PostCard";
 import { Suspense } from "react";
+import type { Post } from "@/types";
+import { SkeletonList } from "@/components/Skeleton";
 
 async function Posts() {
-  const posts = await fetchPosts();
   return (
     <>
       <h1 className="page-title">Posts</h1>
       <div className="card-grid">
-        {posts.map((post: any) => (
-          <PostCard key={post.id} {...post} />
-        ))}
-        {/* <Suspense
+        <Suspense
           fallback={
             <SkeletonList amount={6}>
               <SkeletonPostCard />
             </SkeletonList>
           }
-        > */}
-        {/* <Await resolve={postsPromise}> */}
-        {/* {(posts) => posts.map((post) => <PostCard key={post.id} {...post} />)} */}
-        {/* </Await>
-        </Suspense> */}
+        >
+          <ShowPostList />
+        </Suspense>
       </div>
     </>
   );
+}
+
+async function ShowPostList() {
+  const posts = (await fetchPosts()) as Post[];
+  return posts.map((post) => <PostCard key={post.id} {...post} />);
 }
 
 async function fetchPosts() {

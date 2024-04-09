@@ -1,38 +1,38 @@
-import Skeleton from "@/components/Skeleton";
-import TodoItem from "@/components/TodoItem";
+import { SkeletonList, Skeleton } from "@/components/Skeleton";
+import { TodoItem } from "@/components/TodoItem";
+import { Todo } from "@/types";
+import { wait } from "@/utils/wait";
 import { Suspense } from "react";
 
-async function Todos() {
-  const todos = await fetchTodos();
+function Todos() {
   return (
     <>
       <h1 className="page-title">Todos</h1>
       <ul>
-        {todos.map((todo: any) => (
-          <TodoItem key={todo.id} {...todo} />
-        ))}
-        {/* <Suspense
+        <Suspense
           fallback={
-            <SkeletonList amount={10}>
+            <SkeletonList amount={6}>
               <li>
                 <Skeleton short />
               </li>
             </SkeletonList>
           }
         >
-          <Await resolve={todosPromise}>
-            {(todos) =>
-              todos.map((todo) => <TodoItem key={todo.id} {...todo} />)
-            }
-          </Await>
-        </Suspense> */}
+          <ShowTodoList />
+        </Suspense>
       </ul>
     </>
   );
 }
 
+async function ShowTodoList() {
+  const todos = (await fetchTodos()) as Todo[];
+  return todos.map((todo) => <TodoItem key={todo.id} {...todo} />);
+}
+
 async function fetchTodos() {
-  return await fetch("http://127.0.0.1:3001/todos").then((res) => res.json());
+  // await wait(2);
+  return await fetch(`${process.env.API_URL}/todos`).then((res) => res.json());
 }
 
 export default Todos;

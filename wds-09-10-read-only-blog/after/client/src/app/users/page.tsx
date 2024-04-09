@@ -1,30 +1,15 @@
-import Skeleton from "@/components/Skeleton";
 import Link from "next/link";
+import type { User } from "@/types";
 import { Suspense } from "react";
+import { SkeletonList, Skeleton, SkeletonButton } from "@/components/Skeleton";
+import { wait } from "@/utils/wait";
 
 async function Users() {
-  const users = await fetchUsers();
-
   return (
     <>
       <h1 className="page-title">Users</h1>
       <div className="card-grid">
-        {users.map((user: any) => (
-          <div key={user.id} className="card">
-            <div className="card-header">{user.name}</div>
-            <div className="card-body">
-              <div>{user.company.name}</div>
-              <div>{user.website}</div>
-              <div>{user.email}</div>
-            </div>
-            <div className="card-footer">
-              <Link className="btn" href={user.id.toString()}>
-                View
-              </Link>
-            </div>
-          </div>
-        ))}
-        {/* <Suspense
+        <Suspense
           fallback={
             <SkeletonList amount={6}>
               <div className="card">
@@ -43,33 +28,35 @@ async function Users() {
             </SkeletonList>
           }
         >
-          <Await resolve={usersPromise}>
-            {(users) =>
-              users.map((user) => (
-                <div key={user.id} className="card">
-                  <div className="card-header">{user.name}</div>
-                  <div className="card-body">
-                    <div>{user.company.name}</div>
-                    <div>{user.website}</div>
-                    <div>{user.email}</div>
-                  </div>
-                  <div className="card-footer">
-                    <Link className="btn" to={user.id.toString()}>
-                      View
-                    </Link>
-                  </div>
-                </div>
-              ))
-            }
-          </Await>
-        </Suspense> */}
+          <ShowUserList />
+        </Suspense>
       </div>
     </>
   );
 }
 
+async function ShowUserList() {
+  const users = (await fetchUsers()) as User[];
+  return users.map((user) => (
+    <div key={user.id} className="card">
+      <div className="card-header">{user.name}</div>
+      <div className="card-body">
+        <div>{user.company.name}</div>
+        <div>{user.website}</div>
+        <div>{user.email}</div>
+      </div>
+      <div className="card-footer">
+        <Link className="btn" href={`users/${user.id.toString()}`}>
+          View
+        </Link>
+      </div>
+    </div>
+  ));
+}
+
 async function fetchUsers() {
-  return await fetch("http://127.0.0.1:3001/users").then((res) => res.json());
+  // await wait(2);
+  return await fetch(`${process.env.API_URL}/users`).then((res) => res.json());
 }
 
 export default Users;

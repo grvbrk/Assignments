@@ -1,5 +1,9 @@
-function TodoItem({ completed, title }: any) {
-  return <li className={completed ? "strike-through" : undefined}>{title}</li>;
+export function TodoItem({
+  completed,
+  title,
+}: {
+  completed: boolean;
+  title: string;
+}) {
+  return <li className={completed ? "strike-through" : ""}>{title}</li>;
 }
-
-export default TodoItem;
